@@ -145,7 +145,7 @@ c:Label("BLADES",{
 local dropdown
 local BLADES = {}
 for i,v in pairs(workspace.Islands.MainIsland.BladeOpeners:GetChildren()) do
-    if v.ClassName == "Model" and not table.find(BLADES, v.Name) then
+    if string.find(v.Name, "Shiny") and not table.find(BLADES, v.Name) then
         table.insert(BLADES, v.Name)
     end
 end
@@ -171,7 +171,7 @@ c:Label("CHAMPIONS",{
 }) 
 local HEROES = {}
 for i,v in pairs(workspace.Islands.MainIsland.HeroOpeners:GetChildren()) do
-    if v.ClassName == "Model" and not table.find(HEROES, v.Name) then
+    if string.find(v.Name, "Shiny") and not table.find(HEROES, v.Name) then
         table.insert(HEROES, v.Name)
     end
 end
@@ -190,3 +190,4 @@ spawn(function()
         end
     end
 end)
+
