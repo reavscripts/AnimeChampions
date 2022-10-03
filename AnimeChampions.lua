@@ -9,9 +9,6 @@ local autofarm
 b:Toggle("AutoFarm ON/OFF",function(af)
     autofarm = af
 end)
-b:Button("TP MainIsland",function()
-    game:GetService("ReplicatedStorage").Remotes.Teleport:FireServer("MainIsland")
-end)
 local STAGE = nil
 if LEVEL.Value >= 1 and LEVEL.Value <= 2 then
     STAGE = "Island1"
@@ -142,6 +139,15 @@ spawn(function()
     end
 end)
 local c = w:CreateFolder("Open Crates")
+c:Label("U must be in MainIsland to buy",{
+    TextSize = 16;
+    TextColor = Color3.fromRGB(255,255,255);
+    BgColor = Color3.fromRGB(55,55,55);
+    
+}) 
+c:Button("TP MainIsland",function()
+    game:GetService("ReplicatedStorage").Remotes.Teleport:FireServer("MainIsland")
+end)
 c:Label("BLADES",{
     TextSize = 20;
     TextColor = Color3.fromRGB(255,255,255);
