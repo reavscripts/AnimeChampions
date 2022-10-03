@@ -9,6 +9,9 @@ local autofarm
 b:Toggle("AutoFarm ON/OFF",function(af)
     autofarm = af
 end)
+b:Button("TP MainIsland",function()
+    game:GetService("ReplicatedStorage").Remotes.Teleport:FireServer("MainIsland")
+end)
 local STAGE = nil
 if LEVEL.Value >= 1 and LEVEL.Value <= 2 then
     STAGE = "Island1"
@@ -112,21 +115,24 @@ LEVEL.Changed:Connect(function()
     end
     print("Stage attuale: "..STAGE)
 end)
+local function FARM()
+    for i,v in pairs(workspace.Enemies:GetChildren()) do
+        if v.ClassName == "Model" and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Enemy").Health > 1 then
+            repeat wait()
+                player.Character.HumanoidRootPart.CFrame=v.HumanoidRootPart.CFrame-v.HumanoidRootPart.CFrame.lookVector*3.5
+                game:GetService("ReplicatedStorage").Remotes.Attack:FireServer(player.Character)
+                game:GetService("ReplicatedStorage").Remotes.ClaimQuest:FireServer("ChichaQuest")
+            until v.Enemy.Health == 1 or not autofarm or not QUEST.Visible
+        end
+    end
+end
 
 spawn(function()
     while wait() do
         if autofarm then
             if QUEST.Visible then
                 game:GetService("ReplicatedStorage").Remotes.Teleport:FireServer(STAGE)
-                for i,v in pairs(workspace.Enemies:GetChildren()) do
-                    if v.ClassName == "Model" and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Enemy").Health > 1 then
-                        repeat wait()
-                        player.Character.HumanoidRootPart.CFrame=v.HumanoidRootPart.CFrame-v.HumanoidRootPart.CFrame.lookVector*3.5
-                        game:GetService("ReplicatedStorage").Remotes.Attack:FireServer(player.Character)
-                        game:GetService("ReplicatedStorage").Remotes.ClaimQuest:FireServer("ChichaQuest")
-                        until v.Enemy.Health == 1 or not autofarm or not QUEST.Visible
-                    end
-                end
+                FARM()
             else
                 game:GetService("ReplicatedStorage").Remotes.Teleport:FireServer("MainIsland")
                 game:GetService("ReplicatedStorage").Remotes.GetQuest:FireServer("ChichaQuest")
